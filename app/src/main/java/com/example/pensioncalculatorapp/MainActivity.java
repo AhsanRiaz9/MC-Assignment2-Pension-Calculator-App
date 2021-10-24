@@ -1,19 +1,25 @@
 package com.example.pensioncalculatorapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 import java.lang.Math;
+import java.util.Currency;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener
 {
@@ -27,7 +33,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     Button btn1,btn2,btn3;
     Button calculateBtn;
     Calendar c1,c2,c3, currentDate;
-    TextView  totalService,totalAge, lastSalary, grossPensionText, gradutyPensionText, commutedPensionText, netPensionText;
+    TextView  totalService,totalAge, lastSalary;
+    TextView grossPensionText, gradutyPensionText, commutedPensionText, netPensionText;
     int month,day, year;
     long totalAgeVal, totalServiceVal;
     double  ageRateVal;
@@ -80,37 +87,28 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         });
 
         calculateBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                if(isValidData()==true)
+                if(isValidData())
                 {
-                    long diff1 = currentDate.getTime().getTime() - c1.getTime().getTime();
-                    totalAgeVal = (long)(diff1 / 365.0);
-                    if (diff1 % 365 > 0)
-                    {
-                        totalAgeVal++;
-                    }
-                    long diff2 = c3.getTime().getTime() - c2.getTime().getTime();
-                    totalServiceVal = (long) (diff2 / 365.0);
-                    if (diff2 % 365 > 180)
-                    {
-                        totalAgeVal++;
-                    }
+                    totalAgeVal = currentDate.get(Calendar.YEAR) - c1.get(Calendar.YEAR);
+                    totalServiceVal = c3.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
                     totalAge.setText(Long.toString(totalAgeVal));
                     totalService.setText(Long.toString(totalServiceVal));
-                    ageRateVal = findAgeRate((int)totalAgeVal);
+                    ageRateVal = findAgeRate((int) totalAgeVal);
                     lastBasicPay = Integer.parseInt(lastSalary.getText().toString());
                     grossPension = Math.round((totalServiceVal * lastBasicPay * 7) / 300.0);
                     gradutyPension = Math.round(grossPension * 0.35);
                     commutedPension = Math.round(gradutyPension * 12 * ageRateVal);
                     netPension = Math.round(grossPension * 0.65);
-
                     grossPensionText.setText(Double.toString(grossPension));
                     gradutyPensionText.setText(Double.toString(gradutyPension));
                     commutedPensionText.setText(Double.toString(commutedPension));
                     netPensionText.setText(Double.toString(netPension));
-
                 }
+
+
             }
         });
 
@@ -143,34 +141,50 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         long days1= c1.getTime().getTime();
         long days2 = c2.getTime().getTime();
         long days3 = c3.getTime().getTime();
-        if(days1>days2 || days1>days3 || days2 > days3)
-        {
-            return false;
-        }
-        return false;
+//        if(days1>days2 || days1>days3 || days2 > days3)
+//        {
+//            return false;
+//        }
+        return true;
 
+    }
+
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public long getDays(Calendar sd, Calendar ed)
+//    {
+//        LocalDate startDate = LocalDate.parse(getDatePattern(sd), DateTimeFormatter.ISO_LOCAL_DATE);
+//        LocalDate lastDate = LocalDate.parse(getDatePattern(ed), DateTimeFormatter.ISO_LOCAL_DATE);
+//        Duration diff = Duration.between(startDate.atStartOfDay(), lastDate.atStartOfDay());
+//        long diffDays = diff.toDays();
+//        return diffDays;
+//    }
+
+    public String getDatePattern(Calendar d)
+    {
+        return Integer.toString(d.get(Calendar.YEAR)) + "-" +  Integer.toString(d.get(Calendar.MONTH)) + "-" + Integer.toString(d.get(Calendar.DAY_OF_MONTH));
+        //        return "YYYY-MM-YY";
     }
 
     @Override
     public void onDateSet(DatePicker view, int year,int month,int day)
     {
-
+       month++;
         String currentDateString;
         currentDateString = Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year);
         if(currentBtn == 1)
         {
 
             c1.set(Calendar.YEAR, year);
-            c2.set(Calendar.MONTH, month);
-            c2.set(Calendar.DAY_OF_MONTH, day);
+            c1.set(Calendar.MONTH, month);
+            c1.set(Calendar.DAY_OF_MONTH, day);
             btn1.setText(currentDateString);
             date1Flag = true;
         }
         else if(currentBtn == 2)
         {
-            c3.set(Calendar.YEAR, year);
-            c3.set(Calendar.MONTH, month);
-            c3.set(Calendar.DAY_OF_MONTH, day);
+            c2.set(Calendar.YEAR, year);
+            c2.set(Calendar.MONTH, month);
+            c2.set(Calendar.DAY_OF_MONTH, day);
             btn2.setText(currentDateString);
             date2Flag = true;
         }

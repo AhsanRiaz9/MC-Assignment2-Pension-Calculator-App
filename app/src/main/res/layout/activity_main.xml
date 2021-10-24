@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gradutyPension"
+    android:id="@+id/gdPension77"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/purple_200"
@@ -85,21 +85,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <TextView
-        android:id="@+id/gradutyPension"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#FDFCFC"
-        android:backgroundTint="@color/black"
-        android:text="0"
-        android:textAlignment="center"
-        android:textColor="#FDFDFD"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/grossPension" />
-
-    <TextView
         android:id="@+id/grossPension"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -143,6 +128,21 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/gradutyPension" />
+
+    <TextView
+        android:id="@+id/gradutyPension"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#FDFCFC"
+        android:backgroundTint="@color/black"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#FDFDFD"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/grossPension" />
 
     <TextView
         android:id="@+id/textView16"
