@@ -12,17 +12,27 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.lang.Math;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener
 {
-
+    boolean date1Flag  = false;
+    boolean date2Flag =  false;
+    boolean date3Flag = false;
+    double grossPension = 0;
+    double gradutyPension = 0;
+    double commutedPension = 0;
+    double netPension = 0;
     Button btn1,btn2,btn3;
-    Calendar c1,c2,c3;
-    TextView totalAge, totalService;
+    Button calculateBtn;
+    Calendar c1,c2,c3, currentDate;
+    TextView  totalService,totalAge, lastSalary, grossPensionText, gradutyPensionText, commutedPensionText, netPensionText;
     int month,day, year;
-    int totalAgeVal, totalServiceVal;
+    long totalAgeVal, totalServiceVal;
     double  ageRateVal;
     int currentBtn;
+    int lastBasicPay = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +40,18 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         btn1 = (Button) findViewById(R.id.btn1);
         btn2 = (Button) findViewById(R.id.btn2);
         btn3 = (Button) findViewById(R.id.btn3);
+        calculateBtn = (Button) findViewById(R.id.calculateBtn);
         c1 = Calendar.getInstance();
         c2 = Calendar.getInstance();
         c3 = Calendar.getInstance();
+        currentDate = Calendar.getInstance();
         totalAge = findViewById(R.id.totalAge);
         totalService = findViewById(R.id.totalService);
+        lastSalary = findViewById(R.id.lastSalary);
+        grossPensionText = findViewById(R.id.grossPension);
+        gradutyPensionText = findViewById(R.id.gradutyPension);
+        commutedPensionText = findViewById(R.id.commutedPension);
+        netPensionText = findViewById(R.id.netPension);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,18 +78,93 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 datePicker.show(getSupportFragmentManager(), "date picker");
             }
         });
+
+        calculateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isValidData()==true)
+                {
+                    long diff1 = currentDate.getTime().getTime() - c1.getTime().getTime();
+                    totalAgeVal = (long)(diff1 / 365.0);
+                    if (diff1 % 365 > 0)
+                    {
+                        totalAgeVal++;
+                    }
+                    long diff2 = c3.getTime().getTime() - c2.getTime().getTime();
+                    totalServiceVal = (long) (diff2 / 365.0);
+                    if (diff2 % 365 > 180)
+                    {
+                        totalAgeVal++;
+                    }
+                    totalAge.setText(Long.toString(totalAgeVal));
+                    totalService.setText(Long.toString(totalServiceVal));
+                    ageRateVal = findAgeRate((int)totalAgeVal);
+                    lastBasicPay = Integer.parseInt(lastSalary.getText().toString());
+                    grossPension = Math.round((totalServiceVal * lastBasicPay * 7) / 300.0);
+                    gradutyPension = Math.round(grossPension * 0.35);
+                    commutedPension = Math.round(gradutyPension * 12 * ageRateVal);
+                    netPension = Math.round(grossPension * 0.65);
+
+                    grossPensionText.setText(Double.toString(grossPension));
+                    gradutyPensionText.setText(Double.toString(gradutyPension));
+                    commutedPensionText.setText(Double.toString(commutedPension));
+                    netPensionText.setText(Double.toString(netPension));
+
+                }
+            }
+        });
+
     }
+    public double findAgeRate(int age)
+    {
+        double[] ageRateArray =
+                {
+                        40.5043,39.7341,38.9653,38.1974, 37.4307, 36.6651, 35.9006, 35.1372, 34.375, 33.6143,
+                        32.8071,32.0974, 31.3412, 30.5869,29.8343,29.0841,28.3362,27.5908,26.8482,26.1009,
+                        25.3728,24.6406,23.9126,23.184,22.4713,21.7592,21.0538,20.3555,19.6653,18.9841,
+                        18.3129, 17.6526,17.005,16.371,15.7517,15.1478,14.5602,13.9888,13.434,12.8953,12.3719
+                };
+        double x = 0;
+        if(age<20)
+        {
+            x = 40.503;
+        }
+        else if(age>=20 && age<=60)
+        {
+            x = ageRateArray[age-20];
+        }
+        return x;
+    }
+    boolean isValidData()
+    {
+        if(date1Flag == false  ||date2Flag == false || date3Flag == false) {
+            return false;
+        }
+        long days1= c1.getTime().getTime();
+        long days2 = c2.getTime().getTime();
+        long days3 = c3.getTime().getTime();
+        if(days1>days2 || days1>days3 || days2 > days3)
+        {
+            return false;
+        }
+        return false;
+
+    }
+
     @Override
     public void onDateSet(DatePicker view, int year,int month,int day)
     {
+
         String currentDateString;
         currentDateString = Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year);
         if(currentBtn == 1)
         {
+
             c1.set(Calendar.YEAR, year);
             c2.set(Calendar.MONTH, month);
             c2.set(Calendar.DAY_OF_MONTH, day);
             btn1.setText(currentDateString);
+            date1Flag = true;
         }
         else if(currentBtn == 2)
         {
@@ -80,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             c3.set(Calendar.MONTH, month);
             c3.set(Calendar.DAY_OF_MONTH, day);
             btn2.setText(currentDateString);
+            date2Flag = true;
         }
         else if(currentBtn == 3)
         {
@@ -87,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             c3.set(Calendar.MONTH, month);
             c3.set(Calendar.DAY_OF_MONTH, day);
             btn3.setText(currentDateString);
+            date3Flag = true;
         }
     }
 

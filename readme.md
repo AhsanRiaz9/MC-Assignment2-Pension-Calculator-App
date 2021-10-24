@@ -1,5 +1,5 @@
 # Pension Calculator App in Java Android Studio
 This app will find the pension of the employee.
 
-## UI of Pension App
+## UI of Pension Calculator App
 ![image](UI.jpeg)

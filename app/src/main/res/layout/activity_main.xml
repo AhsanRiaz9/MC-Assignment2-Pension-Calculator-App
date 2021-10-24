@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <TextView
-        android:id="@+id/grossPension"
+        android:id="@+id/gradutyPension"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -97,10 +97,10 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/grossPension2" />
+        app:layout_constraintTop_toBottomOf="@+id/grossPension" />
 
     <TextView
-        android:id="@+id/grossPension2"
+        android:id="@+id/grossPension"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -142,7 +142,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/grossPension" />
+        app:layout_constraintTop_toBottomOf="@+id/gradutyPension" />
 
     <TextView
         android:id="@+id/textView16"
@@ -247,7 +247,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/lastSalary"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="4dp"
@@ -363,7 +363,7 @@
         app:layout_constraintGuide_begin="304dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/calculateBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
