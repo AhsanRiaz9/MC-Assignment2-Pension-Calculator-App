@@ -18,8 +18,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     Button btn1,btn2,btn3;
     Calendar c1,c2,c3;
-    TextView totalAge, totalService, ageRate;
+    TextView totalAge, totalService;
     int month,day, year;
+    int totalAgeVal, totalServiceVal;
+    double  ageRateVal;
     int currentBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         c3 = Calendar.getInstance();
         totalAge = findViewById(R.id.totalAge);
         totalService = findViewById(R.id.totalService);
-        ageRate = findViewById(R.id.ageRate);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
